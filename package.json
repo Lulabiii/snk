@@ -1,0 +1,22 @@
+{
+  "name": "snk",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lulabi__",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.60",
+    "axios": "^1.7.7",
+    "canvas": "^2.11.2",
+    "discord.js": "^14.17.3",
+    "fs": "^0.0.1-security",
+    "map": "^1.0.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.11.4",
+    "path": "^0.12.7"
+  }
+}
