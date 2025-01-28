@@ -110,7 +110,7 @@ setInterval(async () => {
     } catch (error) {
         console.error('Erreur lors de la mise à jour de la faim:', error);
     }
-}, 10000);
+}, 3600000);
 setInterval(async () => {
     try {
         // Récupérer tous les membres avec faim = 0
