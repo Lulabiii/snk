@@ -1,5 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommandBuilder } = require('discord.js');
-const db = require('../database.js'); // Assurez-vous que ce chemin est correct
+const db = require('../database.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -82,7 +82,6 @@ module.exports = {
             connection.release();
 
             if (rows.length === 0 || rows[0].validé !== 'Validé') {
-                // Si l'utilisateur n'est pas validé
                 await interaction.reply({
                     embeds: [{
                         description: `
@@ -141,8 +140,6 @@ module.exports = {
                 },
                 }]
             });
-
-            // Créez un collecteur pour le nom du personnage
             const filter = m => m.author.id === userId;
             const collector = interaction.channel.createMessageCollector({ filter, max: 1, time: 60000 });
 
@@ -152,7 +149,6 @@ module.exports = {
 
                 try {
 
-                    // Demander le prénom
                     const embed1 = new EmbedBuilder()
                         .setColor(0xFFFFFF)
                         .setDescription(`
@@ -168,7 +164,6 @@ module.exports = {
 
                     await interaction.followUp({ embeds: [embed1] });
 
-                    // Collecter le prénom du personnage
                     const filter1 = m => m.author.id === userId;
                     const collector1 = interaction.channel.createMessageCollector({ filter: filter1, max: 1, time: 60000 });
 
@@ -178,7 +173,6 @@ module.exports = {
 
                         try {
 
-                            // Demander la classe
                             const embed2 = new EmbedBuilder()
                                 .setColor(0xFFFFFF)
                                 .setDescription(`
@@ -272,7 +266,6 @@ module.exports = {
 
                         try {
 
-                            // Gérer l'interaction avec le bouton
                             const filter6 = i => i.customId === `set_profile_button_${interaction.user.id}` && i.user.id === interaction.user.id;
                             const collector6 = interaction.channel.createMessageComponentCollector({ filter6, time: 15000 });
 
@@ -295,7 +288,7 @@ module.exports = {
                                         url: 'https://media1.tenor.com/m/m-nDhNedJIAAAAAd/aot-titans.gif',
                                     },
                                         }],
-                                        components: [] // Désactiver le bouton après le clic
+                                        components: []
                                     });
                                                             
                             const connection = await db.getConnection();
@@ -304,7 +297,6 @@ module.exports = {
                                 [characterPrénom, userId]
                             );
                             connection.release();
-                                                // Mettre à jour le nom du personnage dans la base de données
                             const connection1 = await db.getConnection();
                             await connection1.execute(
                                 'UPDATE personnage SET nom = ? WHERE id_membre = ?',

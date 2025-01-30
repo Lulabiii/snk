@@ -8,10 +8,10 @@ module.exports = {
 
     async execute(interaction) {
         const mentionedMember = interaction.options.getUser('membre');
-        const targetMember = mentionedMember || interaction.member; // Si pas de membre mentionné, prendre celui qui utilise la commande
+        const targetMember = mentionedMember || interaction.member;
         const memberId = targetMember.id;
-        const currentTime = Math.floor(Date.now() / 1000); // Temps actuel en secondes (timestamp)
-        const cooldownTime = 10 * 60 * 60; // Cooldown de 10 heures en secondes
+        const currentTime = Math.floor(Date.now() / 1000);
+        const cooldownTime = 10 * 60 * 60;
         const expirationTime = currentTime + cooldownTime;
 
         try {
@@ -23,7 +23,6 @@ module.exports = {
             if (result.length > 0) {
                 const { gaz, reminder_gaz } = result[0];
 
-                // Si le cooldown est actif
                 if (currentTime < gaz) {
                     const remainingTime = gaz - currentTime;
                     const hours = Math.floor(remainingTime / 3600);
@@ -102,7 +101,6 @@ module.exports = {
                         'UPDATE cooldown SET gaz = ?, reminder_gaz = 0, prévenu = 0 WHERE id_membre = ?',
                         [expirationTime, memberId]
                     );
-                    // Mise à jour des sabliers et du cooldown
                     await db.execute(
                         'UPDATE personnage SET gaz = 100 WHERE id_membre = ?',
                         [memberId]
@@ -114,7 +112,7 @@ module.exports = {
                     );
                     const montant2 = newRow[0]?.gaz || 0;
     
-                    // Répond à l'utilisateur après l'utilisation du sablier
+
                     btnInteraction.reply({
                         embeds: [
                             new EmbedBuilder()
@@ -145,7 +143,7 @@ module.exports = {
                                 \`\`\` \`\`\`
                             `)
                                 .setColor(0xFFFFFF)
-                                .setThumbnail('https://cdn.discordapp.com/attachments/1304166305401671791/1332844079049871390/ability_rogue_smoke.png?ex=6796bb47&is=679569c7&hm=0af3f0bffb75766922e5f6ea7e9732a8ad41e9e2600fa249b436b53b3eb58c75&')
+                                .setThumbnail('https://cdn.discordapp.com/attachments/1304166305401671791/1332094788538994719/INV_Misc_Bag_08.png?ex=6794aa32&is=679358b2&hm=f347d88031a4971419ecfb2316b9ec6a763c891b657da733aad59f616bc7322c&')
                                 .setImage('https://media1.tenor.com/m/mIk7Nji5JrgAAAAd/snk-levi.gif')
                         ]
                     });

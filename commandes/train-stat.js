@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, StringSelectMenuBuilder, ButtonBuilder, ActionRowBuilder } = require('discord.js');
-const db = require('../database'); // Connexion SQL via database.js
+const db = require('../database');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('trainˢᵗᵃᵗˢ')
@@ -17,12 +17,11 @@ module.exports = {
         const roleSabre = interaction.member.roles.cache.has(roleIdSabre);
         const roleTridi = interaction.member.roles.cache.has(roleIdTridi);
         const userId = interaction.user.id;
-        const currentTime = Math.floor(Date.now() / 1000); // Temps actuel en secondes (timestamp)
-        const cooldownTime = 16 * 60 * 60; // Cooldown de 16 heures en secondes
+        const currentTime = Math.floor(Date.now() / 1000);
+        const cooldownTime = 16 * 60 * 60;
         const expirationTime = currentTime + cooldownTime;
 
         try {
-            // Vérifier l'existence du cooldown
             const [result] = await db.query(
                 'SELECT train, reminder_sent FROM cooldown WHERE id_membre = ?',
                 [userId]
@@ -31,7 +30,6 @@ module.exports = {
             if (result.length > 0) {
                 const { train, reminder_sent } = result[0];
 
-                // Si le cooldown est actif
                 if (currentTime < train) {
                     const remainingTime = train - currentTime;
                     const hours = Math.floor(remainingTime / 3600);
@@ -93,7 +91,7 @@ module.exports = {
                     .setStyle('Secondary')
             );
             
-            // Réponse avec l'embed, le menu déroulant et les boutons
+
             await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
@@ -108,7 +106,7 @@ module.exports = {
                         .setThumbnail('https://cdn.discordapp.com/attachments/1304166305401671791/1331362224295510068/INV__Fistofthewhitetiger.png')
                         .setImage('https://i.gifer.com/UjLp.gif')
                 ],
-                components: [row],  // Assure-toi d'utiliser ActionRowBuilder ici
+                components: [row],
                 flags: 0,
             });
             const filter = (btnInteraction) => btnInteraction.user.id === interaction.user.id;

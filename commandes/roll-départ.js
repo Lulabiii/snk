@@ -1,25 +1,23 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommandBuilder } = require('discord.js');
-const db = require('../database.js'); // Assurez-vous que ce chemin est correct
+const db = require('../database.js');
 const embed_perm = require('../events/embed.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('rollᵈᵉᵖᵃʳᵗ')
         .setDescription("Permets de faire son roll départ"),
-    async execute(interaction, client) { // Ajoute 'client' pour accéder au cache des salons
+    async execute(interaction, client) {
         const memberId = interaction.member.id;
         try {
             const connection = await db.getConnection();
 
-            // Effectuer la requête SQL pour récupérer le roll_départ
             const [rows] = await connection.execute(
                 'SELECT roll_départ FROM roll WHERE id_membre = ?',
                 [memberId]
             );
             connection.release();
-            const rollDepart = rows[0].roll_départ; // Obtenez la valeur de roll_départ
+            const rollDepart = rows[0].roll_départ;
 
-            // Vérifie si un résultat a été trouvé
             if (rollDepart === 1) {
                 const randomNumber = Math.floor(Math.random() * 100) + 1;
                 if (randomNumber < 5) {

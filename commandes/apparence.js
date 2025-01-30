@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const db = require('../database.js'); // Assurez-vous que ce chemin est correct
+const db = require('../database.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -12,10 +12,9 @@ module.exports = {
                 .setRequired(true)
         ),
     async execute(interaction) {
-        const imageUrl = interaction.options.getString('lien'); // Lien fourni par l'utilisateur (optionnel)  $
+        const imageUrl = interaction.options.getString('lien');
         const mentionedMemberId = interaction.user.id   
         if (imageUrl) {
-            // Vérification si le lien semble être une image
             const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(imageUrl);
             if (!isImage) {
                 await interaction.reply({
@@ -30,10 +29,10 @@ module.exports = {
                         `,
                         color: 0xFFFFFF,
                         thumbnail: {
-                            url: 'https://cdn.discordapp.com/attachments/1304166305401671791/1304900535861907527/70_inscription_vantus_rune_nightmare.png?ex=673d9913&is=673c4793&hm=f6118ebdb60158f2977802688d9af4cfc32e72d596f7ca66730c7027d139fce2&',
+                            url: `https://cdn.discordapp.com/attachments/1304166305401671791/1304900535861907527/70_inscription_vantus_rune_nightmare.png?ex=673d9913&is=673c4793&hm=f6118ebdb60158f2977802688d9af4cfc32e72d596f7ca66730c7027d139fce2&`,
                         },
                         image: {
-                            url: 'https://media1.tenor.com/m/HLUBX7pAoDkAAAAd/eren-kruger.gif',
+                            url: `https://media1.tenor.com/m/HLUBX7pAoDkAAAAd/eren-kruger.gif`,
                         },
                     }],
                     flags: 64,

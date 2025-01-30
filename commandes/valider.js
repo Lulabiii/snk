@@ -1,5 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommandBuilder } = require('discord.js');
-const db = require('../database.js'); // Assurez-vous que ce chemin est correct
+const db = require('../database.js');
 const embed_perm = require('../events/embed.js');
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
                 .setDescription('Le membre dont la fiche doit être validée')
                 .setRequired(true)
         ),
-    async execute(interaction, client) { // Ajoute 'client' pour accéder au cache des salons
+    async execute(interaction, client) {
         const roleIdStaff = '1304183166008954991';
         const mentionedMember = interaction.options.getUser('membre');
         const roleStaff = interaction.member.roles.cache.has(roleIdStaff);
@@ -46,7 +46,7 @@ module.exports = {
                 flags: 0,
             });
 
-            // Envoie un message dans le salon spécifique
+
             const targetChannel = interaction.client.channels.cache.get('1304183515084230677');
             if (targetChannel) {
                 await targetChannel.send({

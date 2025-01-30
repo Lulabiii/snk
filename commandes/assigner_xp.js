@@ -21,17 +21,14 @@ module.exports = {
             const nomMembre = member.user.username;
 
 
-            // Requête pour récupérer l'XP du membre
             const [xpResult] = await pool.query(
                 'SELECT xp FROM experience WHERE id_membre = ?;', [idMembre]
             );
 
-            // Requête pour récupérer l'entraînement global
             const [trainResult] = await pool.query(
                 'SELECT train_global FROM entrainement WHERE id_membre = ?;', [idMembre]
             );
 
-            // Si aucune donnée n'est trouvée
             if (!xpResult[0] || !trainResult[0]) {
                 throw new Error('Données manquantes dans la base de données');
             }
@@ -42,14 +39,12 @@ module.exports = {
             const xpFinal = xp + trainMultiplié;
 
 
-            // Mise à jour de l'XP dans la base de données
             await pool.query(
                 'UPDATE experience SET xp = ? WHERE id_membre = ?;',
                 [xpFinal, idMembre]
             );
             await member.setNickname(`${pseudo} [ ${xpFinal} ]`);
 
-            // Envoi de la réponse avec l'image principale et le thumbnail
             await interaction.reply({
                 embeds: [{
                     description: `# > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1260570361150439496:1304167355600863312> ] — __Exρᥱrιᥱᥒᥴᥱ__**\n <:Sans_titre_349_20240519142111Cop:1304168162392019066> __**L'xp de ${member} a bien été mise à jour.**__`,
@@ -68,7 +63,6 @@ module.exports = {
         } catch (error) {
             console.error(error);
 
-            // Si une erreur se produit, informez l'utilisateur
             await interaction.reply({
                 content: `Une erreur est survenue.`,
                 flags: 64,

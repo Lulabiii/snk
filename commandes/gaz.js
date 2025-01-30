@@ -13,7 +13,7 @@ module.exports = {
 
     async execute(interaction) {
         const mentionedMember = interaction.options.getUser('membre');
-        const targetMember = mentionedMember || interaction.member; // Si pas de membre mentionné, prendre celui qui utilise la commande
+        const targetMember = mentionedMember || interaction.member;
         const memberId = targetMember.id;
         try {
             let [[{ gaz } = {}]] = await db.query(

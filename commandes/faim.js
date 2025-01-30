@@ -171,3 +171,4 @@ setInterval(async () => {
         console.error('Erreur lors de la vérification de la faim:', error);
     }
 }, 60000);
+

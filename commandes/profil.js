@@ -3,6 +3,7 @@ const db = require('../database');
 const { stats } = require('../Fonction_commandes/stats.js');
 const { inventaire } = require('../Fonction_commandes/inventaire.js');
 const { argent } = require('../Fonction_commandes/argent.js');
+const { morale } = require('../Fonction_commandes/morale.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,7 +17,7 @@ module.exports = {
 
     async execute(interaction) {
         const mentionedMember = interaction.options.getUser('membre');
-        const targetMember = mentionedMember || interaction.member; // Si pas de membre mentionné, prendre celui qui utilise la commande
+        const targetMember = mentionedMember || interaction.member;
         const memberId = targetMember.id;
 
         try {
@@ -42,6 +43,10 @@ module.exports = {
                                         new ButtonBuilder()
                                         .setCustomId(`button_inventaire`)
                                         .setEmoji('<:inventaire:1234628961389121647>')
+                                        .setStyle('Secondary'),
+                                        new ButtonBuilder()
+                                        .setCustomId(`button_morale`)
+                                        .setEmoji('<:rp_alliance:1232763102991224833>')
                                         .setStyle('Secondary'),
                                         new ButtonBuilder()
                                         .setCustomId(`button_argent`)
@@ -78,6 +83,9 @@ module.exports = {
             }
             else if (btnInteraction.customId === 'button_argent') {
                 await argent(btnInteraction, memberId);
+            }
+            else if (btnInteraction.customId === 'button_morale') {
+                await morale(btnInteraction, memberId);
             }
         })
         } catch (error) {

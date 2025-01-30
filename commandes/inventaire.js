@@ -14,7 +14,7 @@ module.exports = {
         const mentionedMember = interaction.options.getUser('membre');
         const targetMember = mentionedMember || interaction.member;
         const memberId = targetMember.id;
-
+        const interaction_member_id = interaction.user.id;
 
         try {
             const row = new ActionRowBuilder().addComponents(
@@ -49,7 +49,7 @@ module.exports = {
                 components: [row],
                 flags: 0,
             });
-            const filter = (btnInteraction) => btnInteraction.user.id === memberId;
+            const filter = (btnInteraction) => btnInteraction.user.id === interaction_member_id;
             const collector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 });
 
             collector.on('collect', async (btnInteraction) => {
