@@ -2,8 +2,9 @@ const { Client, GatewayIntentBits, Collection, REST, Routes } = require('discord
 const { token, clientId, guildId } = require('./config.json');
 const fs = require('fs');
 const path = require('path');
+const db = require('./database');
+const { Events, AttachmentBuilder, EmbedBuilder, SlashCommandBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
-// Créer une nouvelle instance du client Discord
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -14,18 +15,29 @@ const client = new Client({
     ],
 });
 
-// Créer une collection pour les commandes
 client.commands = new Collection();
 
-// Charger les commandes
-const commandFiles = fs.readdirSync(path.join(__dirname, 'commandes')).filter(file => file.endsWith('.js'));
+function readCommandsFromDir(dir) {
+    const files = fs.readdirSync(dir);
+    let commandFiles = [];
+    for (const file of files) {
+        const filePath = path.join(dir, file);
+        if (fs.statSync(filePath).isDirectory()) {
+            commandFiles = commandFiles.concat(readCommandsFromDir(filePath));
+        } else if (file.endsWith('.js')) {
+            commandFiles.push(filePath);
+        }
+    }
+    return commandFiles;
+}
+
+const commandFiles = readCommandsFromDir(path.join(__dirname, 'commandes'));
 
 for (const file of commandFiles) {
-    const command = require(`./commandes/${file}`);
+    const command = require(file);
     client.commands.set(command.data.name, command);
 }
 
-// Enregistrer les commandes slash auprès de Discord
 const rest = new REST({ version: '10' }).setToken(token);
 
 (async () => {
@@ -43,12 +55,54 @@ const rest = new REST({ version: '10' }).setToken(token);
     }
 })();
 
-// Lorsque le bot est prêt
+setInterval(async () => {
+    try {
+        const [results] = await db.query(`
+            SELECT id_membre 
+            FROM économie 
+            WHERE argent > 10000
+        `);
+
+        for (const { id_membre } of results) {
+            const user = await client.users.fetch(id_membre);
+            if (user) {
+                await db.query('UPDATE économie SET argent = argent -10000 WHERE id_membre = ?', [id_membre]);
+                const [newRow] = await db.execute(
+                    'SELECT argent FROM économie WHERE id_membre = ?',
+                    [id_membre]
+                );
+                const montant2 = newRow[0]?.argent || 0;
+                await user.send({
+                    embeds: [{
+                        description: `
+    \`\`\` \`\`\`
+    
+    > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:gold:1304167372999098489> ] — __Tᥲxᥱ__**
+    <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${user}, La taxe a bien été payée, il vous reste désormais [ __\`${montant2}¥\`__ ].**
+    
+    \`\`\` \`\`\`
+                        `,
+                        color: 0xFFFFFF,
+                        thumbnail: {
+                            url: 'https://cdn.discordapp.com/attachments/1304166305401671791/1333077594857275423/INV_10_Fishing_DragonIslesCoins_Gold.png?ex=67a4c3c1&is=67a37241&hm=f31d20ef2a82eb708986ae59c9ceba6ae97edea08283b430028fdc71af92c78d&',
+                        },
+                        image: {
+                            url: 'https://www.buzzfrance.fr/wp-content/uploads/2021/06/eren-snk.gif',
+                        },
+                    }],
+                    flags: 0,
+                });
+            }
+        }
+    } catch (error) {
+        console.error('Erreur lors de l\'envoi des rappels :', error);
+    }
+}, 604800000);
+
 client.once('ready', () => {
     console.log(`Connecté en tant que ${client.user.tag}`);
 });
 
-// Charger les événements
 const eventFiles = fs.readdirSync(path.join(__dirname, 'events')).filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
@@ -59,5 +113,5 @@ for (const file of eventFiles) {
         client.on(event.name, (...args) => event.execute(...args));
     }
 }
-// Connexion avec le token
+
 client.login(token);
