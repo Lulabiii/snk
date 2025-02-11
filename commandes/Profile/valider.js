@@ -2,6 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommand
 const db = require('../../database.js');
 const embed_perm = require('../../events/embed.js');
 
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('validerᶠⁱᶜʰᵉ')

@@ -4,6 +4,7 @@ const db = require('../../database.js');
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
+const { validé } = require('../../Fonction_commandes/validé.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -12,11 +13,29 @@ module.exports = {
 
     async execute(interaction) {
         try {
-            const member = interaction.member;
-            const imagePath = 'https://cdn.discordapp.com/attachments/1304166305401671791/1334637511137296415/carte.png?ex=67a481cb&is=67a3304b&hm=51ec2237300b3f575f43aed95ff5f87e3bc79457e1e02d5167dc24b8f63c3c71&';
-            const pinPath = 'https://cdn.discordapp.com/attachments/1304166305401671791/1334876260152905859/epingle.png?ex=67a4b765&is=67a365e5&hm=112e14757dd3263997da5b42dd2e9473af06a8039843685b6690ca9ddc4d44f6&';
-            const outputPath = path.join(__dirname, '../images/carte_tempo.png');
             
+            const member = interaction.member;
+            const imagePath = 'https://cdn.discordapp.com/attachments/1304166305401671791/1334637511137296415/carte.png?ex=67ac6acb&is=67ab194b&hm=38d7b61ae5e9216a48920cf4d51afb796c1dc6a59e6b76df7f434b20ff3c07ce&';
+            const pinPath = 'https://cdn.discordapp.com/attachments/1304166305401671791/1334876260152905859/epingle.png?ex=67aca065&is=67ab4ee5&hm=e8f3a648dd7e1c0d998d9afc5ade2919df2141ce29283f3712599b64d533f978&';
+            const outputPath = path.join(__dirname, '../images/carte_tempo.png');
+            if ((await validé(memberId)) === false) {
+                await interaction.reply({
+                    embeds: [new EmbedBuilder()
+                        .setDescription(`
+                \`\`\` \`\`\`
+                
+                > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Profιᥣ__**
+                <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'êtes pas validé et ne pouvez en conséquent pas effectuer cette commande.**
+                
+                \`\`\` \`\`\`
+                        `)
+                        .setColor(0xFFFFFF)
+                        .setThumbnail('https://cdn.discordapp.com/attachments/1304166305401671791/1304540451910455326/Ability_Evoker_Rewind.png?ex=67ac5938&is=67ab07b8&hm=56a56fe6b8a79e8e664d2d3fe5017e5e143cc3c6a10a02d9b5d3ecb57c7cead2&')
+                        .setImage('https://media1.tenor.com/m/8O90plJTiQYAAAAd/eren-eren-yeager.gif')
+                    ], flags :64,
+                });
+                return;
+            }
             // Assurer que le répertoire existe
             const dir = path.dirname(outputPath);
             if (!fs.existsSync(dir)) {

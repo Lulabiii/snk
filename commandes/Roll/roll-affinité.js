@@ -1,5 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const db = require('../../database.js');
+const { validé } = require('../../Fonction_commandes/validé.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,6 +15,24 @@ module.exports = {
         const roleIdRési = '1304183239912722573';
         const roleIdAgi = '1304183240688664628';
         try {
+            if ((await validé(memberId)) === false) {
+                await interaction.reply({
+                    embeds: [new EmbedBuilder()
+                        .setDescription(`
+                \`\`\` \`\`\`
+                
+                > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Profιᥣ__**
+                <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'êtes pas validé et ne pouvez en conséquent pas effectuer cette commande.**
+                
+                \`\`\` \`\`\`
+                        `)
+                        .setColor(0xFFFFFF)
+                        .setThumbnail('https://cdn.discordapp.com/attachments/1304166305401671791/1304540451910455326/Ability_Evoker_Rewind.png?ex=67ac5938&is=67ab07b8&hm=56a56fe6b8a79e8e664d2d3fe5017e5e143cc3c6a10a02d9b5d3ecb57c7cead2&')
+                        .setImage('https://media1.tenor.com/m/8O90plJTiQYAAAAd/eren-eren-yeager.gif')
+                    ], flags :64,
+                });
+                return;
+            }
             const connection = await db.getConnection();
             const [rows] = await connection.execute(
                 'SELECT roll_affinité FROM roll WHERE id_membre = ?',
@@ -88,8 +107,6 @@ module.exports = {
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Entrainement\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`x1.5\`__]**
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Rolls restants\` ] <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`${rollDepart - 1}\`__]**
     
-    \`⦇・━━━═══════════════════════════════━━━・⦈\`
-    
     > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Dᥱ́tᥲιᥣs__**
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **Vous avez obtenu l'affinité <@&${roleIdSabre}>, __cette affinité permet à vos entrainement dans \`la statistique de votre affinité\` d'être plus efficace.__**
     
@@ -128,8 +145,6 @@ module.exports = {
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Talent\` ] — __Mᥲᥒιᥱmᥱᥒt dᥙ sᥲbrᥱ__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Rareté\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`20%\`__]**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Entrainement\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`x1.5\`__]**
-        
-        \`⦇・━━━═══════════════════════════════━━━・⦈\`
         
         > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Dᥱ́tᥲιᥣs__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **L'affinité <@&${roleIdSabre}> vous a bien été attribué !**
@@ -175,8 +190,6 @@ module.exports = {
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Entrainement\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`x1.5\`__]**
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Rolls restants\` ] <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`${rollDepart - 1}\`__]**
     
-    \`⦇・━━━═══════════════════════════════━━━・⦈\`
-    
     > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Dᥱ́tᥲιᥣs__**
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **Vous avez obtenu l'affinité <@&${roleIdTridi}>, __cette affinité permet à vos entrainement dans \`la statistique de votre affinité\` d'être plus efficace.__**
     
@@ -215,8 +228,6 @@ module.exports = {
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Talent\` ] — __Trιdιmᥱᥒsιoᥒᥒᥲᥣιtᥱ́__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Rareté\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`20%\`__]**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Entrainement\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`x1.5\`__]**
-        
-        \`⦇・━━━═══════════════════════════════━━━・⦈\`
         
         > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Dᥱ́tᥲιᥣs__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **L'affinité <@&${roleIdTridi}> vous a bien été attribué !**
@@ -262,8 +273,6 @@ module.exports = {
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Entrainement\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`x1.5\`__]**
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Rolls restants\` ] <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`${rollDepart - 1}\`__]**
     
-    \`⦇・━━━═══════════════════════════════━━━・⦈\`
-    
     > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Dᥱ́tᥲιᥣs__**
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **Vous avez obtenu l'affinité <@&${roleIdRési}>, __cette affinité permet à vos entrainement dans \`la statistique de votre affinité\` d'être plus efficace.__**
     
@@ -302,8 +311,6 @@ module.exports = {
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Talent\` ] — __Rᥱ́sιstᥲᥒᥴᥱ__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Rareté\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`20%\`__]**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Entrainement\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`x1.5\`__]**
-        
-        \`⦇・━━━═══════════════════════════════━━━・⦈\`
         
         > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Dᥱ́tᥲιᥣs__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **L'affinité <@&${roleIdRési}> vous a bien été attribué !**
@@ -349,8 +356,6 @@ module.exports = {
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Entrainement\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`x1.5\`__]**
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Rolls restants\` ] <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`${rollDepart - 1}\`__]**
     
-    \`⦇・━━━═══════════════════════════════━━━・⦈\`
-    
     > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Dᥱ́tᥲιᥣs__**
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **Vous avez obtenu l'affinité <@&${roleIdForce}>, __cette affinité permet à vos entrainement dans \`la statistique de votre affinité\` d'être plus efficace.__**
     
@@ -389,8 +394,6 @@ module.exports = {
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Talent\` ] — __Forᥴᥱ__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Rareté\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`20%\`__]**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Entrainement\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`x1.5\`__]**
-        
-        \`⦇・━━━═══════════════════════════════━━━・⦈\`
         
         > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Dᥱ́tᥲιᥣs__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **L'affinité <@&${roleIdForce}> vous a bien été attribué !**
@@ -436,8 +439,6 @@ module.exports = {
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Entrainement\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`x1.5\`__]**
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Rolls restants\` ] <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`${rollDepart - 1}\`__]**
     
-    \`⦇・━━━═══════════════════════════════━━━・⦈\`
-    
     > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Dᥱ́tᥲιᥣs__**
     <:Sans_titre_349_20240519142111Cop:1304168162392019066> **Vous avez obtenu l'affinité <@&${roleIdAgi}>, __cette affinité permet à vos entrainement dans \`la statistique de votre affinité\` d'être plus efficace.__**
     
@@ -476,8 +477,6 @@ module.exports = {
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Talent\` ] — __Agιᥣιtᥱ́__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Rareté\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`20%\`__]**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Entrainement\` ] — __Commᥙᥒ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`x1.5\`__]**
-        
-        \`⦇・━━━═══════════════════════════════━━━・⦈\`
         
         > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Dᥱ́tᥲιᥣs__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **L'affinité <@&${roleIdAgi}> vous a bien été attribué !**

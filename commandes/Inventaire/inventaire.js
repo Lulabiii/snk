@@ -1,5 +1,6 @@
 const { EmbedBuilder, SlashCommandBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require('discord.js');
 const db = require('../../database.js');
+const { validé } = require('../../Fonction_commandes/validé.js')
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('inventaire')
@@ -17,6 +18,24 @@ module.exports = {
         const interaction_member_id = interaction.user.id;
 
         try {
+            if ((await validé(memberId)) === false) {
+                await interaction.reply({
+                    embeds: [new EmbedBuilder()
+                        .setDescription(`
+                \`\`\` \`\`\`
+                
+                > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Profιᥣ__**
+                <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'êtes pas validé et ne pouvez en conséquent pas effectuer cette commande.**
+                
+                \`\`\` \`\`\`
+                        `)
+                        .setColor(0xFFFFFF)
+                        .setThumbnail('https://cdn.discordapp.com/attachments/1304166305401671791/1304540451910455326/Ability_Evoker_Rewind.png?ex=67ac5938&is=67ab07b8&hm=56a56fe6b8a79e8e664d2d3fe5017e5e143cc3c6a10a02d9b5d3ecb57c7cead2&')
+                        .setImage('https://media1.tenor.com/m/8O90plJTiQYAAAAd/eren-eren-yeager.gif')
+                    ], flags :64,
+                });
+                return;
+            }
             const row = new ActionRowBuilder().addComponents(
                 new ButtonBuilder()
                     .setCustomId('button_nourriture')
@@ -176,7 +195,7 @@ module.exports = {
                         else if (btnInteraction1.customId === 'button_autres') {
                             const connection = await db.getConnection();
                             const [rowss] = await connection.execute(
-                                'SELECT orange, poire, cerise, raisin, banane, pomme, avocat, framboise, pruneau, mûre, blé, salade, pain FROM nourriture WHERE id_membre = ?',
+                                'SELECT orange, poire, cerise, raisin, banane, pomme, avocat, framboise, pruneau, mûre, blé, salade, carotte, patate, chou, tomate , pain FROM nourriture WHERE id_membre = ?',
                                 [memberId]
                             );
                             const {
@@ -192,6 +211,10 @@ module.exports = {
                                 mûre = 0,
                                 blé = 0,
                                 salade = 0,
+                                carotte = 0,
+                                patate = 0,
+                                chou = 0,
+                                tomate = 0,                               
                                 pain = 0,                               
                             } = rowss[0];
                             await btnInteraction1.reply({
@@ -213,8 +236,12 @@ module.exports = {
                                             { name: '<:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __`Prᥙᥒᥱᥲᥙ`__ ]', value: `<:Sans_titre_349_20240519142111Cop:1304168162392019066> **__${pruneau ?? '0'}__**`, inline: true },
                                             { name: '<:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __`Mᥙrᥱ`__ ]', value: `<:Sans_titre_349_20240519142111Cop:1304168162392019066> **__${mûre ?? '0'}__**`, inline: true },
                                             { name: '<:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __`Bᥣᥱ́`__ ]', value: `<:Sans_titre_349_20240519142111Cop:1304168162392019066> **__${blé ?? '0'}__**`, inline: true },
-                                            { name: '<:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __`Sᥲᥣᥲdᥱ`__ ]', value: `<:Sans_titre_349_20240519142111Cop:1304168162392019066> **__${salade ?? '0'}__**`, inline: true },
                                             { name: '<:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __`Pᥲιᥒ`__ ]', value: `<:Sans_titre_349_20240519142111Cop:1304168162392019066> **__${pain ?? '0'}__**`, inline: true },
+                                            { name: '<:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __`Sᥲᥣᥲdᥱ`__ ]', value: `<:Sans_titre_349_20240519142111Cop:1304168162392019066> **__${salade ?? '0'}__**`, inline: true },
+                                            { name: '<:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __`Cᥲrottᥱ`__ ]', value: `<:Sans_titre_349_20240519142111Cop:1304168162392019066> **__${carotte ?? '0'}__**`, inline: true },
+                                            { name: '<:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __`Pᥲtᥲtᥱ`__ ]', value: `<:Sans_titre_349_20240519142111Cop:1304168162392019066> **__${patate ?? '0'}__**`, inline: true },
+                                            { name: '<:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __`Choᥙ`__ ]', value: `<:Sans_titre_349_20240519142111Cop:1304168162392019066> **__${chou ?? '0'}__**`, inline: true },
+                                            { name: '<:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __`Tomᥲtᥱ`__ ]', value: `<:Sans_titre_349_20240519142111Cop:1304168162392019066> **__${tomate ?? '0'}__**`, inline: true },
                                         )
                                         .setColor(0xFFFFFF)
                                         .setThumbnail('https://cdn.discordapp.com/attachments/1304166305401671791/1332496383537582173/INV_Misc_Food_Wheat_01.png?ex=67957776&is=679425f6&hm=87b2198aab9c7f335037f7fdce03e800172ac1bfbdf85d39101eddf198e59ddf&')

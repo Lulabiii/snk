@@ -1,5 +1,6 @@
 const { EmbedBuilder, SlashCommandBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require('discord.js');
 const db = require('../../database.js');
+const { validé } = require('../../Fonction_commandes/validé.js')
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('faim')
@@ -11,6 +12,24 @@ module.exports = {
 
 
         try {
+            if ((await validé(memberId)) === false) {
+                await interaction.reply({
+                    embeds: [new EmbedBuilder()
+                        .setDescription(`
+                \`\`\` \`\`\`
+                
+                > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Profιᥣ__**
+                <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'êtes pas validé et ne pouvez en conséquent pas effectuer cette commande.**
+                
+                \`\`\` \`\`\`
+                        `)
+                        .setColor(0xFFFFFF)
+                        .setThumbnail('https://cdn.discordapp.com/attachments/1304166305401671791/1304540451910455326/Ability_Evoker_Rewind.png?ex=67ac5938&is=67ab07b8&hm=56a56fe6b8a79e8e664d2d3fe5017e5e143cc3c6a10a02d9b5d3ecb57c7cead2&')
+                        .setImage('https://media1.tenor.com/m/8O90plJTiQYAAAAd/eren-eren-yeager.gif')
+                    ], flags :64,
+                });
+                return;
+            }
             const [[{ faim } = {}]] = await db.query(
                 'SELECT faim FROM personnage WHERE id_membre = ?', [memberId]);
             const userDisplayName = targetMember ? targetMember.username : interaction.user.username;
@@ -32,7 +51,7 @@ module.exports = {
                     flags: 0,
                 });
             }
-            else if (faim < 30) {
+            else if (faim <= 30) {
                 await interaction.reply({
                     embeds: [new EmbedBuilder()
                         .setDescription(`
@@ -100,7 +119,9 @@ setInterval(async () => {
 
         for (const row of results) {
             const memberId = row.id_membre;
-
+            if ((await validé(memberId)) === false) {
+                return;
+            }
             await db.query(`
                 UPDATE personnage 
                 SET faim = faim - 5 
@@ -128,7 +149,9 @@ setInterval(async () => {
 
         for (const row of results) {
             const memberId = row.id_membre;
-
+            if ((await validé(memberId)) === false) {
+                return;
+            }
 
             const guild = client.guilds.cache.get('1303429846579413084');
             if (!guild) {

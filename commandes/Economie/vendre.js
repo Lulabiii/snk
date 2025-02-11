@@ -4,21 +4,20 @@ const { trade } = require('../../Fonction_commandes/trade.js');
 const { validé } = require('../../Fonction_commandes/validé.js')
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('trade')
-        .setDescription("Permets à deux utilisateurs de s'échanger des items.")
+        .setName('vendre')
+        .setDescription("Permets à un utilisateur de vendre un objet à un autre.")
         .addUserOption(option =>
             option.setName('membre')
-                .setDescription("Mentionnez le membre avec qui vous souhaitez faire l'échange.")
+                .setDescription("Mentionnez le membre avec qui vous souhaitez faire la vente.")
                 .setRequired(true)
         ),
 
     async execute(interaction) {
-        const memberId = interaction.member.id;
-        const mentionedMember = interaction.options.getUser('membre');
-        const targetMember = mentionedMember;
-        const metionedMemberId = mentionedMember.id;
-
         try {
+            const memberId = interaction.member.id;
+            const mentionedMember = interaction.options.getUser('membre');
+            const targetMember = mentionedMember;
+            const metionedMemberId = mentionedMember.id;
             if ((await validé(memberId)) === false) {
                 await interaction.reply({
                     embeds: [new EmbedBuilder()
@@ -60,8 +59,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, que souhaitez-vous échanger ?**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, que souhaitez-vous vendre ?**
 
         \`\`\` \`\`\`
                     `)
@@ -125,8 +124,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:legumes:1333917616124985385> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, cliquez sur la nourriture que vous souhaitez échanger.**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:legumes:1333917616124985385> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, cliquez sur la nourriture que vous souhaitez vendre.**
 
         \`\`\` \`\`\`
                     `)
@@ -152,8 +151,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:legumes:1333917616124985385> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune salade à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:legumes:1333917616124985385> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune salade à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -166,7 +165,7 @@ module.exports = {
 											return;
 										}
 									else { // Actuel
-                                        await trade(i, memberId, selectedValue, metionedMemberId );
+                                        await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -177,8 +176,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:legumes:1333917616124985385> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune carotte à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:legumes:1333917616124985385> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune carotte à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -191,7 +190,7 @@ module.exports = {
 											return;
 										}
 									else {
-                                        await trade(i, memberId, selectedValue, metionedMemberId );
+                                        await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -202,8 +201,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:legumes:1333917616124985385> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune pomme de terre à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:legumes:1333917616124985385> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune pomme de terre à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -216,7 +215,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -227,8 +226,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:legumes:1333917616124985385> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun chou à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:legumes:1333917616124985385> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun chou à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -241,7 +240,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -252,8 +251,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:legumes:1333917616124985385> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune tomate à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:legumes:1333917616124985385> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune tomate à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -266,7 +265,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -354,8 +353,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, cliquez sur la nourriture que vous souhaitez échanger.**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, cliquez sur la nourriture que vous souhaitez vendre.**
 
         \`\`\` \`\`\`
                     `)
@@ -381,8 +380,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune orange à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune orange à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -395,7 +394,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -406,8 +405,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune poire à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune poire à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -420,7 +419,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -431,8 +430,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune cerise à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune cerise à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -445,7 +444,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -456,8 +455,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun raisin à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun raisin à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -470,7 +469,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -481,8 +480,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune banane à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune banane à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -495,7 +494,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -506,8 +505,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune pomme à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune pomme à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -520,7 +519,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -531,8 +530,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun avocat à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun avocat à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -545,7 +544,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
                             }
                     collector2.stop();
                 }
@@ -556,8 +555,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune framboise à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune framboise à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -570,7 +569,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -581,8 +580,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun pruneau à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun pruneau à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -595,7 +594,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -606,8 +605,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune mure à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:banane:1333917436440744129> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune mure à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -620,7 +619,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -684,8 +683,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, cliquez sur la nourriture que vous souhaitez échanger.**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, cliquez sur la nourriture que vous souhaitez vendre.**
 
         \`\`\` \`\`\`
                     `)
@@ -711,8 +710,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune entrecôte à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune entrecôte à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -725,7 +724,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -736,8 +735,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun jambon à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun jambon à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -750,7 +749,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
                             
 									}
                     collector2.stop();
@@ -762,8 +761,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun faux filets à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun faux filets à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -776,7 +775,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -787,8 +786,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune bavette à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune bavette à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -801,7 +800,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -812,8 +811,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune saucisse à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune saucisse à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -827,7 +826,7 @@ module.exports = {
 										}
 									else {
 										
-                                        await trade(i, memberId, selectedValue, metionedMemberId );
+                                        await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -838,8 +837,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune tranche grasse à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:viande:1332436030422388756> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucune tranche grasse à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -852,7 +851,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -933,8 +932,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, cliquez sur le poisson que vous souhaitez échanger.**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, cliquez sur le poisson que vous souhaitez vendre.**
 
         \`\`\` \`\`\`
                     `)
@@ -960,8 +959,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun saumon à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun saumon à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -974,7 +973,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -985,8 +984,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun bar à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun bar à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -999,7 +998,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -1010,8 +1009,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun truite à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun truite à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -1024,7 +1023,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
                             
 									}
                     collector2.stop();
@@ -1036,8 +1035,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun sardine à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun sardine à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -1050,7 +1049,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
                            
 									}
                     collector2.stop();
@@ -1062,8 +1061,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun bulot à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun bulot à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -1076,7 +1075,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
                             
 									}
                     collector2.stop();
@@ -1088,8 +1087,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun vieille à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun vieille à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -1103,7 +1102,7 @@ module.exports = {
 										}
 									else {
 										
-                                        await trade(i, memberId, selectedValue, metionedMemberId );
+                                        await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -1114,8 +1113,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun thon à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun thon à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -1129,7 +1128,7 @@ module.exports = {
 										}
 									else {
 										
-                                        await trade(i, memberId, selectedValue, metionedMemberId );
+                                        await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -1140,8 +1139,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun dorade à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun dorade à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -1155,7 +1154,7 @@ module.exports = {
 										}
 									else {
 										
-                                        await trade(i, memberId, selectedValue, metionedMemberId );
+                                        await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }
@@ -1166,8 +1165,8 @@ module.exports = {
                     .setDescription(`
             \`\`\` \`\`\`
 
-        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Trᥲdᥱ__**
-        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun lieu à échanger !**
+        > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:poisson_chat:1234607049053044809> ] — __Vᥱᥒtᥱ__**
+        <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'avez aucun lieu à vendre !**
 
         \`\`\` \`\`\`
                     `)
@@ -1180,7 +1179,7 @@ module.exports = {
 											return;
 										}
 									else {
-										await trade(i, memberId, selectedValue, metionedMemberId );
+										await vendre(i, memberId, selectedValue, metionedMemberId );
 									}
                     collector2.stop();
                 }

@@ -1,5 +1,7 @@
 const { Events, AttachmentBuilder, EmbedBuilder, SlashCommandBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 const db = require('../../database.js');
+const { validé } = require('../../Fonction_commandes/validé.js')
+
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,6 +17,24 @@ module.exports = {
         const expirationTime = currentTime + cooldownTime;
 
         try {
+            if ((await validé(memberId)) === false) {
+                await interaction.reply({
+                    embeds: [new EmbedBuilder()
+                        .setDescription(`
+                \`\`\` \`\`\`
+                
+                > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Profιᥣ__**
+                <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'êtes pas validé et ne pouvez en conséquent pas effectuer cette commande.**
+                
+                \`\`\` \`\`\`
+                        `)
+                        .setColor(0xFFFFFF)
+                        .setThumbnail('https://cdn.discordapp.com/attachments/1304166305401671791/1304540451910455326/Ability_Evoker_Rewind.png?ex=67ac5938&is=67ab07b8&hm=56a56fe6b8a79e8e664d2d3fe5017e5e143cc3c6a10a02d9b5d3ecb57c7cead2&')
+                        .setImage('https://media1.tenor.com/m/8O90plJTiQYAAAAd/eren-eren-yeager.gif')
+                    ], flags :64,
+                });
+                return;
+            }
             const [result] = await db.query(
                 'SELECT weekly, prévenu_weekly FROM cooldown WHERE id_membre = ?',
                 [memberId]
@@ -27,7 +47,43 @@ module.exports = {
                     const remainingTime = weekly - currentTime;
                     const hours = Math.floor(remainingTime / 3600);
                     const minutes = Math.floor((remainingTime % 3600) / 60);
-
+                    if (hours <= 24) {
+                        await interaction.reply({
+                            embeds: [new EmbedBuilder()
+                                .setDescription(`
+            \`\`\` \`\`\`
+            
+            > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:gold:1304167372999098489> ] — __Argᥱᥒt__**
+            <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous devez attendre encore __\`${hours}\`__ heures et __\`${minutes}\`__ minutes.**
+            
+            \`\`\` \`\`\`
+                                `)
+                                .setColor(0xFFFFFF)
+                                .setThumbnail('https://cdn.discordapp.com/attachments/1304166305401671791/1333077594857275423/INV_10_Fishing_DragonIslesCoins_Gold.png?ex=67a4c3c1&is=67a37241&hm=f31d20ef2a82eb708986ae59c9ceba6ae97edea08283b430028fdc71af92c78d&')
+                                .setImage('https://www.buzzfrance.fr/wp-content/uploads/2021/06/eren-snk.gif')
+                            ],
+                            flags: 64,
+                        });
+                    }
+                    else {
+                        const day = Math.floor(hours / 24);
+                        await interaction.reply({
+                            embeds: [new EmbedBuilder()
+                                .setDescription(`
+            \`\`\` \`\`\`
+            
+            > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:gold:1304167372999098489> ] — __Argᥱᥒt__**
+            <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous devez attendre encore __\`${day}\`__ jours.**
+            
+            \`\`\` \`\`\`
+                                `)
+                                .setColor(0xFFFFFF)
+                                .setThumbnail('https://cdn.discordapp.com/attachments/1304166305401671791/1333077594857275423/INV_10_Fishing_DragonIslesCoins_Gold.png?ex=67a4c3c1&is=67a37241&hm=f31d20ef2a82eb708986ae59c9ceba6ae97edea08283b430028fdc71af92c78d&')
+                                .setImage('https://www.buzzfrance.fr/wp-content/uploads/2021/06/eren-snk.gif')
+                            ],
+                            flags: 64,
+                        });
+                    }
                     await interaction.reply({
                         embeds: [new EmbedBuilder()
                             .setDescription(`
@@ -167,10 +223,12 @@ setInterval(async () => {
             WHERE weekly <= UNIX_TIMESTAMP() 
             AND prévenu_weekly = 0
         `);
-
         for (const { id_membre } of results) {
             const user = await client.users.fetch(id_membre);
             if (user) {
+                if ((await validé(id_membre)) === false) {
+                    return;
+                }
                 await user.send({
                     embeds: [{
                         description: `

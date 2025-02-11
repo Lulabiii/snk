@@ -1,6 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const db = require('../../database.js');
 const embed_perm = require('../../events/embed.js');
+const { validé } = require('../../Fonction_commandes/validé.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,6 +10,24 @@ module.exports = {
     async execute(interaction, client) {
         const memberId = interaction.member.id;
         try {
+            if ((await validé(memberId)) === false) {
+                await interaction.reply({
+                    embeds: [new EmbedBuilder()
+                        .setDescription(`
+                \`\`\` \`\`\`
+                
+                > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Profιᥣ__**
+                <:Sans_titre_349_20240519142111Cop:1304168162392019066> **${interaction.user}, vous n'êtes pas validé et ne pouvez en conséquent pas effectuer cette commande.**
+                
+                \`\`\` \`\`\`
+                        `)
+                        .setColor(0xFFFFFF)
+                        .setThumbnail('https://cdn.discordapp.com/attachments/1304166305401671791/1304540451910455326/Ability_Evoker_Rewind.png?ex=67ac5938&is=67ab07b8&hm=56a56fe6b8a79e8e664d2d3fe5017e5e143cc3c6a10a02d9b5d3ecb57c7cead2&')
+                        .setImage('https://media1.tenor.com/m/8O90plJTiQYAAAAd/eren-eren-yeager.gif')
+                    ], flags :64,
+                });
+                return;
+            }
             const connection = await db.getConnection();
 
             const [rows] = await connection.execute(
@@ -29,8 +48,6 @@ module.exports = {
         > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:luck:1305248514015756440> ] — __Roᥣᥣ__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Départ\` ] — __Lᥱ́gᥱᥒdᥲιrᥱ__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Rareté\` ] — __Iᥒᥱstιmᥲbᥣᥱ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`5%\`__]**
-    
-        \`⦇・━━━═══════════════════════════════━━━・⦈\`
     
         > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Dᥱ́tᥲιᥣs__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **Vous commencez alors votre aventure au sein du serveur avec __\`4 rolls talent\`__, __\`4 rolls affinité\`__ ainsi que __\`75000 Yen.\`__ À vous maintenant de faire de votre mieux afin de survivre dans cet monde impitoyable.**
@@ -55,20 +72,20 @@ module.exports = {
                     connection.release();
                     const connection1 = await db.getConnection();
                     await connection1.execute(
-                        'UPDATE roll SET roll_talent = roll_talent +? WHERE id_membre = ?',
-                        [4, memberId]
+                        'UPDATE roll SET roll_talent = ? WHERE id_membre = ?',
+                        ['4', memberId]
                     );
                     connection1.release();
                     const connection2 = await db.getConnection();
                     await connection2.execute(
-                        'UPDATE roll SET roll_affinité = roll_affinité +? WHERE id_membre = ?',
-                        [4, memberId]
+                        'UPDATE roll SET roll_affinité = ? WHERE id_membre = ?',
+                        ['4', memberId]
                     );
                     connection2.release();
                     const connection3 = await db.getConnection();
                     await connection3.execute(
-                        'UPDATE économie SET argent = argent +? WHERE id_membre = ?',
-                        [75000, memberId]
+                        'UPDATE économie SET argent = ? WHERE id_membre = ?',
+                        ['75000', memberId]
                     );
                     connection3.release();
 
@@ -82,8 +99,6 @@ module.exports = {
         > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:luck:1305248514015756440> ] — __Roᥣᥣ__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Départ\` ] — __Coᥒsιdᥱ́rᥲbᥣᥱ__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Rareté\` ] — __Trᥱ̀s rᥲrᥱ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`20%\`__]**
-    
-        \`⦇・━━━═══════════════════════════════━━━・⦈\`
     
         > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Dᥱ́tᥲιᥣs__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **Vous commencez alors votre aventure au sein du serveur avec __\`3 rolls talent\`__, __\`3 rolls affinité\`__ ainsi que __\`50000 Yen.\`__ À vous maintenant de faire de votre mieux afin de survivre dans cet monde impitoyable.**
@@ -108,20 +123,20 @@ module.exports = {
                     connection.release();
                     const connection1 = await db.getConnection();
                     await connection1.execute(
-                        'UPDATE roll SET roll_talent = roll_talent +? WHERE id_membre = ?',
-                        [3, memberId]
+                        'UPDATE roll SET roll_talent = ? WHERE id_membre = ?',
+                        ['3', memberId]
                     );
                     connection1.release();
                     const connection2 = await db.getConnection();
                     await connection2.execute(
-                        'UPDATE roll SET roll_affinité = roll_affinité +? WHERE id_membre = ?',
-                        [3, memberId]
+                        'UPDATE roll SET roll_affinité = ? WHERE id_membre = ?',
+                        ['3', memberId]
                     );
                     connection2.release();
                     const connection3 = await db.getConnection();
                     await connection3.execute(
-                        'UPDATE économie SET argent = argent +? WHERE id_membre = ?',
-                        [50000, memberId]
+                        'UPDATE économie SET argent = ? WHERE id_membre = ?',
+                        ['50000', memberId]
                     );
                     connection3.release();
 
@@ -135,8 +150,6 @@ module.exports = {
         > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:luck:1305248514015756440> ] — __Roᥣᥣ__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Départ\` ] — __Aρρrᥱ́ᥴιᥲbᥣᥱ__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Rareté\` ] — __Rᥲrᥱ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`30%\`__]**
-    
-        \`⦇・━━━═══════════════════════════════━━━・⦈\`
     
         > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Dᥱ́tᥲιᥣs__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **Vous commencez alors votre aventure au sein du serveur avec __\`2 rolls talent\`__, __\`2 rolls affinité\`__ ainsi que __\`35000 Yen.\`__ À vous maintenant de faire de votre mieux afin de survivre dans cet monde impitoyable.**
@@ -161,20 +174,20 @@ module.exports = {
                     connection.release();
                     const connection1 = await db.getConnection();
                     await connection1.execute(
-                        'UPDATE roll SET roll_talent = roll_talent +? WHERE id_membre = ?',
-                        [2, memberId]
+                        'UPDATE roll SET roll_talent = ? WHERE id_membre = ?',
+                        ['2', memberId]
                     );
                     connection1.release();
                     const connection2 = await db.getConnection();
                     await connection2.execute(
-                        'UPDATE roll SET roll_affinité = roll_affinité +? WHERE id_membre = ?',
-                        [2, memberId]
+                        'UPDATE roll SET roll_affinité = ? WHERE id_membre = ?',
+                        ['2', memberId]
                     );
                     connection2.release();
                     const connection3 = await db.getConnection();
                     await connection3.execute(
-                        'UPDATE économie SET argent = argent +? WHERE id_membre = ?',
-                        [35000, memberId]
+                        'UPDATE économie SET argent = ? WHERE id_membre = ?',
+                        ['35000', memberId]
                     );
                     connection3.release();
                 }
@@ -187,8 +200,6 @@ module.exports = {
         > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:luck:1305248514015756440> ] — __Roᥣᥣ__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Départ\` ] — __Loᥙᥲbᥣᥱ__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **[ \`Rareté\` ] — __Pᥱᥙ rᥲrᥱ__ <:Sans_titre_349_20240518230508Cop:1304168153680707604> [ __\`45%\`__]**
-    
-        \`⦇・━━━═══════════════════════════════━━━・⦈\`
     
         > <:Sans_titre_349_20240518230508Cop:1304168153680707604> **[ <:1266038099637571688:1304167358927208570> ] — __Dᥱ́tᥲιᥣs__**
         <:Sans_titre_349_20240519142111Cop:1304168162392019066> **Vous commencez alors votre aventure au sein du serveur avec __\`2 rolls talent\`__, __\`1 rolls affinité\`__ ainsi que __\`20000 Yen.\`__ À vous maintenant de faire de votre mieux afin de survivre dans cet monde impitoyable.**
@@ -252,6 +263,7 @@ module.exports = {
                     }],
                     flags: 0,
                 });
+                return;
             }
         } catch (error) {
             console.error(error);
